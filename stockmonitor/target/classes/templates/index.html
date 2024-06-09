@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Stock Monitor</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<h1>Stock Monitor</h1>
+<form id="stock-form">
+  <label for="symbol">Stock Symbol:</label>
+  <input type="text" id="symbol" name="symbol" required>
+  <button type="submit">Get Stock</button>
+</form>
+
+<div id="stock-info">
+  <p>Symbol: <span id="symbol-display"></span></p>
+  <p>Price: <span id="price-display"></span></p>
+  <p>Change: <span id="change-display"></span></p>
+  <p>Change Percent: <span id="change-percent-display"></span></p>
+</div>
+
+<script>
+  document.querySelector('#stock-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var symbol = document.querySelector('#symbol').value;
+    fetch('/api/stocks/' + symbol)
+            .then(response => response.json())
+            .then(data => {
+              document.querySelector('#symbol-display').innerText = data.symbol;
+              document.querySelector('#price-display').innerText = data.price;
+              document.querySelector('#change-display').innerText = data.change;
+              document.querySelector('#change-percent-display').innerText = data.changePercent;
+            });
+  });
+</script>
+</body>
+</html>
